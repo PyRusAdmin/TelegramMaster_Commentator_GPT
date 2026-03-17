@@ -5,16 +5,8 @@ import datetime
 import flet as ft
 from loguru import logger
 from telethon.errors import (
-    UserBannedInChannelError,
-    PeerIdInvalidError,
-    MsgIdInvalidError,
-    SlowModeWaitError,
-    ChatWriteForbiddenError,
-    ChatGuestSendForbiddenError,
-    FloodWaitError,
-    ChannelPrivateError,
-    AuthKeyUnregisteredError,
-    UsernameInvalidError,
+    UserBannedInChannelError, PeerIdInvalidError, MsgIdInvalidError, SlowModeWaitError, ChatWriteForbiddenError,
+    ChatGuestSendForbiddenError, FloodWaitError, ChannelPrivateError, AuthKeyUnregisteredError, UsernameInvalidError
 )
 from telethon.tl.types import PeerChannel
 
@@ -133,7 +125,7 @@ class TelegramCommentator:
                                     data = await get_groq_response(message_text)
                                     # Проверяем существование записи в БД
                                     if not await check_message_exists(
-                                        message_id, channel_id
+                                            message_id, channel_id
                                     ):
                                         # Если записи нет, отправляем комментарий и записываем его в БД
 

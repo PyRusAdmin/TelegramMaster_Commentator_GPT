@@ -21,7 +21,7 @@ def find_files(directory_path: str, extension: str) -> list:
     try:
         for file_name in os.listdir(directory_path):
             if file_name.endswith(
-                f".{extension}"
+                    f".{extension}"
             ):  # Проверяем, заканчивается ли имя файла на заданное расширение
                 file_path = os.path.join(
                     directory_path, file_name
@@ -42,10 +42,10 @@ async def connect_client(session_path: str) -> TelegramClient | None:
     """
     try:
         async with TelegramClient(
-            session=session_path,
-            api_id=api_id,
-            api_hash=api_hash,
-            system_version="4.16.30-vxCUSTOM",
+                session=session_path,
+                api_id=api_id,
+                api_hash=api_hash,
+                system_version="4.16.30-vxCUSTOM",
         ) as tmp_client:
             # Сохраняем как StringSession (удобно для прокси)
             session_string = StringSession.save(tmp_client.session)

@@ -105,7 +105,7 @@ class TGConnect:
                             )  # Перенаправление в настройки, если 2FA не требуется
                             page.update()
                         except (
-                            SessionPasswordNeededError
+                                SessionPasswordNeededError
                         ):  # Если аккаунт защищен паролем, запрашиваем пароль
                             logger.info(
                                 "❌ Требуется двухфакторная аутентификация. Введите пароль."

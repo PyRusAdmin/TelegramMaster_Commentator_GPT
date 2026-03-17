@@ -207,7 +207,7 @@ class DatabaseHandler:
             self.close()  # Закрываем соединение
 
     async def deleting_an_invalid_proxy(
-        self, proxy_type, addr, port, username, password, rdns
+            self, proxy_type, addr, port, username, password, rdns
     ) -> None:
         """
         Удаляем не рабочий proxy с software_database.db, таблица proxy

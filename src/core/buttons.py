@@ -2,9 +2,7 @@
 import flet as ft
 
 
-async def create_buttons_2(
-    text: str, on_click, width: int = 420, height: int = 35
-) -> ft.ElevatedButton:
+async def create_buttons_2(text: str, on_click, width: int = 420, height: int = 35) -> ft.ElevatedButton:
     """
     Создает универсальную кнопку с заданными параметрами.
 
@@ -17,9 +15,7 @@ async def create_buttons_2(
     return ft.ElevatedButton(text=text, on_click=on_click, width=width, height=height)
 
 
-async def create_buttons(
-    text: str, on_click, width: int = 850, height: int = 35
-) -> ft.ElevatedButton:
+async def create_buttons(text: str, on_click, width: int = 850, height: int = 35) -> ft.ElevatedButton:
     """
     Создает универсальную кнопку с заданными параметрами.
 

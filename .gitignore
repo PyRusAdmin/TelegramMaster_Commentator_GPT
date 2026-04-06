@@ -1,7 +1,8 @@
-!/data/accounts/79538320570.session
-!/data/accounts/session_name.session
-!/data/accounts/session_name.session-journal
-!/data/accounts/session_name_1.session
-!/data/accounts/session_name_2.session
-!/data/config/config.ini
+/data/accounts/79538320570.session
+/data/accounts/session_name.session
+/data/accounts/session_name.session-journal
+/data/accounts/session_name_1.session
+/data/accounts/session_name_2.session
+/data/config/config.ini
 setting/config.ini
+/.idea/

@@ -22,15 +22,15 @@ class ConfigReader:
         self.config_gui = configparser.ConfigParser(
             empty_lines_in_values=False, allow_no_value=True
         )
-        self.config_gui.read("data/config/config_gui.ini")
+        self.config_gui.read("data/config/config_gui.ini", encoding="utf-8")
         self.config = configparser.ConfigParser(
             empty_lines_in_values=False, allow_no_value=True
         )
-        self.config.read("data/config/config.ini")
+        self.config.read("data/config/config.ini", encoding="utf-8")
         self.config_path = configparser.ConfigParser(
             empty_lines_in_values=False, allow_no_value=True
         )
-        self.config_path.read("data/config/config_path.ini")
+        self.config_path.read("data/config/config_path.ini", encoding="utf-8")
 
     def get_time_config_settings(self):
         """

@@ -2,7 +2,9 @@
 import flet as ft
 
 
-async def create_buttons_2(text: str, on_click, width: int = 420, height: int = 35) -> ft.ElevatedButton:
+async def create_buttons_2(
+    text: str, on_click, width: int = 420, height: int = 35
+) -> ft.ElevatedButton:
     """
     Создает универсальную кнопку с заданными параметрами.
 
@@ -12,10 +14,14 @@ async def create_buttons_2(text: str, on_click, width: int = 420, height: int = 
     :param height: Высота кнопки (по умолчанию 35).
     :return: Объект кнопки ft.ElevatedButton.
     """
-    return ft.ElevatedButton(text=text, on_click=on_click, width=width, height=height)
+    return ft.ElevatedButton(
+        content=ft.Text(text), on_click=on_click, width=width, height=height
+    )
 
 
-async def create_buttons(text: str, on_click, width: int = 850, height: int = 35) -> ft.ElevatedButton:
+async def create_buttons(
+    text: str, on_click, width: int = 850, height: int = 35
+) -> ft.ElevatedButton:
     """
     Создает универсальную кнопку с заданными параметрами.
 
@@ -25,4 +31,6 @@ async def create_buttons(text: str, on_click, width: int = 850, height: int = 35
     :param height: Высота кнопки (по умолчанию 35).
     :return: Объект кнопки ft.ElevatedButton.
     """
-    return ft.ElevatedButton(text=text, on_click=on_click, width=width, height=height)
+    return ft.ElevatedButton(
+        content=ft.Text(text), on_click=on_click, width=width, height=height
+    )

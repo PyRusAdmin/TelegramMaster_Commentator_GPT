@@ -5,8 +5,16 @@ import datetime
 import flet as ft
 from loguru import logger
 from telethon.errors import (
-    UserBannedInChannelError, PeerIdInvalidError, MsgIdInvalidError, SlowModeWaitError, ChatWriteForbiddenError,
-    ChatGuestSendForbiddenError, FloodWaitError, ChannelPrivateError, AuthKeyUnregisteredError, UsernameInvalidError
+    UserBannedInChannelError,
+    PeerIdInvalidError,
+    MsgIdInvalidError,
+    SlowModeWaitError,
+    ChatWriteForbiddenError,
+    ChatGuestSendForbiddenError,
+    FloodWaitError,
+    ChannelPrivateError,
+    AuthKeyUnregisteredError,
+    UsernameInvalidError,
 )
 from telethon.tl.types import PeerChannel
 
@@ -104,11 +112,10 @@ class TelegramCommentator:
                     await client.get_entity(name[0]), limit=1
                 )
                 for message in messages:
-
                     # Получаем ID сообщения и ID канала, чтобы записать данные в базу данных
                     message_id = message.id
                     message_peer_id = message.peer_id
-                    message_text = message.text
+                    message_text = message.text or message.message or ""
                     await message_output_program_window(
                         lv=lv,
                         page=self.page,
@@ -122,10 +129,15 @@ class TelegramCommentator:
                             try:
                                 if isinstance(message_peer_id, PeerChannel):
                                     channel_id = message_peer_id.channel_id
-                                    data = await get_groq_response(message_text)
+                                    user_prompt = (
+                                        message_text.strip()
+                                        if message_text and message_text.strip()
+                                        else "Напиши короткий позитивный комментарий к посту"
+                                    )
+                                    data = await get_groq_response(user_prompt)
                                     # Проверяем существование записи в БД
                                     if not await check_message_exists(
-                                            message_id, channel_id
+                                        message_id, channel_id
                                     ):
                                         # Если записи нет, отправляем комментарий и записываем его в БД
 

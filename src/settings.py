@@ -363,14 +363,14 @@ class SettingPage:
                             dropdown,
                             result_text,
                             ft.ElevatedButton(
-                                text="✅ Готово",  # Кнопка "Готово"
-                                width=self.width_elements,  # Ширина кнопки
-                                on_click=done_button_clicked,  # Обработчик клика
+                                content=ft.Text("✅ Готово"),
+                                width=self.width_elements,
+                                on_click=done_button_clicked,
                             ),
                             ft.ElevatedButton(
-                                text="⬅️ Назад",  # Кнопка "Назад"
-                                width=self.width_elements,  # Ширина кнопки
-                                on_click=back_button_clicked,  # Обработчик клика
+                                content=ft.Text("⬅️ Назад"),
+                                width=self.width_elements,
+                                on_click=back_button_clicked,
                             ),
                         ],
                         alignment=ft.MainAxisAlignment.START,

@@ -263,47 +263,47 @@ async def main(page: ft.Page):
     )
 
     page.add(layout)
+
+    async def handle_route_change(e):
+        route_handlers = {
+            "/getting_list_channels": lambda: handle_getting_list_channels(page),
+            "/submitting_comments": lambda: TelegramCommentator(
+                page
+            ).handle_submitting_comments(),
+            "/change_name_description_photo": lambda: (
+                handle_change_name_description_photo(page)
+            ),
+            "/channel_subscription": lambda: handle_channel_subscription(page),
+            "/creating_list_of_channels": lambda: handle_creating_list_of_channels(
+                page
+            ),
+            "/documentation": lambda: handle_documentation(page),
+            "/connect_accounts": lambda: handle_connect_accounts(page),
+            "/settings": lambda: handle_settings(page),
+            "/settings_proxy": lambda: SettingPage(
+                page
+            ).creating_the_main_window_for_proxy_data_entry(),
+            "/record_id_hash": lambda: SettingPage(page).writing_api_id_api_hash(),
+            "/recording_message": lambda: SettingPage(
+                page
+            ).recording_text_for_sending_messages(
+                "Введите сообщение, которое будет отправляться в канал",
+                "data/message/message",
+            ),
+            "/choosing_an_ai_model": lambda: SettingPage(page).choosing_an_ai_model(),
+            "/record_time": lambda: SettingPage(page).record_setting(
+                limit_type="time_config", label="Введите время в секундах, в цифрах"
+            ),
+        }
+
+        route = page.route if page.route else "/"
+        handler = route_handlers.get(route)
+        if handler:
+            await handler()
+        page.update()
+
+    page.on_route_change = handle_route_change
     await loging()
-
-    page.on_route_change = lambda e: handle_route_change(page, info_list)
-    await loging()
-
-
-async def handle_route_change(page: ft.Page, info_list: ft.ListView):
-    route_handlers = {
-        "/getting_list_channels": lambda: handle_getting_list_channels(page),
-        "/submitting_comments": lambda: TelegramCommentator(
-            page
-        ).handle_submitting_comments(),
-        "/change_name_description_photo": lambda: handle_change_name_description_photo(
-            page
-        ),
-        "/channel_subscription": lambda: handle_channel_subscription(page),
-        "/creating_list_of_channels": lambda: handle_creating_list_of_channels(page),
-        "/documentation": lambda: handle_documentation(page),
-        "/connect_accounts": lambda: handle_connect_accounts(page),
-        "/settings": lambda: handle_settings(page),
-        "/settings_proxy": lambda: SettingPage(
-            page
-        ).creating_the_main_window_for_proxy_data_entry(),
-        "/record_id_hash": lambda: SettingPage(page).writing_api_id_api_hash(),
-        "/recording_message": lambda: SettingPage(
-            page
-        ).recording_text_for_sending_messages(
-            "Введите сообщение, которое будет отправляться в канал",
-            "data/message/message",
-        ),
-        "/choosing_an_ai_model": lambda: SettingPage(page).choosing_an_ai_model(),
-        "/record_time": lambda: SettingPage(page).record_setting(
-            limit_type="time_config", label="Введите время в секундах, в цифрах"
-        ),
-    }
-
-    route = page.route if page.route else "/"
-    handler = route_handlers.get(route)
-    if handler:
-        await handler()
-    page.update()
 
 
 ft.run(main)

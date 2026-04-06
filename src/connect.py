@@ -100,7 +100,7 @@ class TGConnect:
                                 phone_number_value, passww.value
                             )  # Авторизация с кодом
                             telegram_client.disconnect()
-                            page.push_route(
+                            page.go(
                                 "/connecting_accounts_by_number"
                             )  # Перенаправление в настройки, если 2FA не требуется
                             page.update()
@@ -124,7 +124,7 @@ class TGConnect:
                                     )
                                     logger.info("Успешная авторизация.")
                                     telegram_client.disconnect()
-                                    page.push_route(
+                                    page.go(
                                         "/connecting_accounts_by_number"
                                     )  # Изменение маршрута в представлении существующих настроек
                                     page.update()
@@ -171,7 +171,7 @@ class TGConnect:
                 """
                 Кнопка возврата в меню настроек
                 """
-                page.push_route("/connecting_accounts_by_number")
+                page.go("/connecting_accounts_by_number")
 
             input_view = ft.View(
                 controls=[
@@ -238,7 +238,7 @@ class TGConnect:
 
             async def back_button_clicked(e):
                 """Кнопка возврата в меню настроек"""
-                page.push_route("/connecting_accounts_by_session")
+                page.go("/connecting_accounts_by_session")
 
             pick_files_dialog = ft.FilePicker(
                 on_result=btn_click

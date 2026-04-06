@@ -78,11 +78,15 @@ async def key_app_bar(page: ft.Page):
     """
     Кнопка в верхней панели приложения (возврат в главное меню).
     """
+
+    def go_home(e):
+        page.go("/")
+
     return ft.AppBar(
         leading=ft.IconButton(
             icon=ft.Icons.ARROW_BACK,
             tooltip="На главную",
-            on_click=lambda _: page.push_route("/"),
+            on_click=go_home,
         ),
         title=ft.Text("На главную"),
         toolbar_height=40,

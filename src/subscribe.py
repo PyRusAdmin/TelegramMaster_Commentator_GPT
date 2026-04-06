@@ -64,7 +64,7 @@ async def handle_channel_subscription(page: ft.Page):
         title=await program_title(title="Подписка на каналы"),
         buttons=[
             await create_buttons(text="Подписка", on_click=action_1),
-            await create_buttons(text="Назад", on_click=lambda _: page.push_route("/")),
+            await create_buttons(text="Назад", on_click=lambda _: page.go("/")),
         ],
         route_page="channel_subscription",
         lv=lv,

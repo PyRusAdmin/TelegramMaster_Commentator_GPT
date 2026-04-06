@@ -62,7 +62,7 @@ async def handle_connect_accounts(page: ft.Page):
                 await create_buttons(
                     text="📱 Подключение по номеру телефона", on_click=phone_connection
                 ),
-                await create_buttons(text="🔙 Назад", on_click=lambda _: page.push_route("/")),
+                await create_buttons(text="🔙 Назад", on_click=lambda _: page.go("/")),
             ],
             route_page="change_name_description_photo",
             lv=lv,  # Передаем ListView для отображения

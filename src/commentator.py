@@ -82,7 +82,7 @@ class TelegramCommentator:
                         text="Отправка комментариев", on_click=action_1
                     ),
                     await create_buttons(
-                        text="Назад", on_click=lambda _: self.page.push_route("/")
+                        text="Назад", on_click=lambda _: self.page.go("/")
                     ),
                 ],
                 route_page="submitting_comments",

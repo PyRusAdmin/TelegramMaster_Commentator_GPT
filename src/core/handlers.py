@@ -27,23 +27,23 @@ async def handle_settings(page: ft.Page):
 
     async def connection_proxy(_):
         """🔗 Подключение прокси"""
-        page.push_route("/settings_proxy")
+        page.go("/settings_proxy")
 
     async def record_time(_):
         """⏳ Запись времени"""
-        page.push_route("/record_time")
+        page.go("/record_time")
 
     async def record_id_hash(_):
         """🆔 Запись ID и Hash"""
-        page.push_route("/record_id_hash")
+        page.go("/record_id_hash")
 
     async def recording_message(_):
         """✉️ Запись сообщения"""
-        page.push_route("/recording_message")
+        page.go("/recording_message")
 
     async def choosing_an_ai_model(_):
         """Выбор ИИ модели"""
-        page.push_route("/choosing_an_ai_model")
+        page.go("/choosing_an_ai_model")
 
     await view_with_elements(
         page=page,
@@ -124,7 +124,7 @@ async def handle_creating_list_of_channels(page: ft.Page):
         title=await program_title(title="📂 Формирование списка каналов"),
         buttons=[
             await create_buttons(text="✅ Готово", on_click=action_1),
-            await create_buttons(text="Назад", on_click=lambda _: page.push_route("/")),
+            await create_buttons(text="Назад", on_click=lambda _: page.go("/")),
         ],
         route_page="creating_list_of_channels",
         lv=lv,
@@ -185,7 +185,7 @@ async def handle_documentation(page: ft.Page):
         title=await program_title(title="Документация"),  # Создаем заголовок страницы
         buttons=[
             await create_buttons(text="🌐 Открыть сайт", on_click=open_website),
-            await create_buttons(text="Назад", on_click=lambda _: page.push_route("/")),
+            await create_buttons(text="Назад", on_click=lambda _: page.go("/")),
         ],
         route_page="documentation",
         lv=ft.ListView(controls=[markdown_widget], expand=True, spacing=10, padding=20),

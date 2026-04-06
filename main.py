@@ -60,7 +60,7 @@ def create_title(text: str, font_size) -> ft.Text:
 def create_button(page: ft.Page, text: str, route: str) -> ft.OutlinedButton:
     return ft.OutlinedButton(
         content=ft.Text(text),
-        on_click=lambda _: page.push_route(route),
+        on_click=lambda _: page.go(route),
         width=BUTTON_WIDTH,
         height=BUTTON_HEIGHT,
         style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=RADIUS)),
@@ -265,6 +265,14 @@ async def main(page: ft.Page):
     page.add(layout)
 
     async def handle_route_change(e):
+        if page.route == "/" or not page.route:
+            # Возврат на главную страницу
+            if len(page.views) > 0:
+                page.views.clear()
+            page.views.append(ft.View("/", [layout]))
+            page.update()
+            return
+
         route_handlers = {
             "/getting_list_channels": lambda: handle_getting_list_channels(page),
             "/submitting_comments": lambda: TelegramCommentator(
@@ -296,8 +304,7 @@ async def main(page: ft.Page):
             ),
         }
 
-        route = page.route if page.route else "/"
-        handler = route_handlers.get(route)
+        handler = route_handlers.get(page.route)
         if handler:
             await handler()
         page.update()

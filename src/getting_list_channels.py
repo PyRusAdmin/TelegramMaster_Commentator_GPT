@@ -12,9 +12,9 @@ from src.telegram_client import connect_telegram_account
 async def handle_getting_list_channels(page: ft.Page):
     """Создает страницу Получение списка каналов"""
     logger.info("Пользователь перешел на страницу Получение списка каналов")
+    page.views.clear()
     lv = ft.ListView(expand=10, spacing=1, padding=2, auto_scroll=True)
 
-    # Добавляем пояснительный текст
     lv.controls.append(
         ft.Text(
             "Для получения списка каналов, необходимо подключить аккаунт к комментатору.\n\n"
@@ -25,11 +25,6 @@ async def handle_getting_list_channels(page: ft.Page):
             "💾 Все данные будут сохранены в базе данных по пути: `data/database/app.db`\n",
         )
     )
-
-    page.controls.append(
-        lv
-    )  # добавляем ListView на страницу для отображения информации
-    page.views.clear()  # Очищаем страницу и добавляем новый View
 
     async def action_1(_):
         """ "Получение списка каналов"""

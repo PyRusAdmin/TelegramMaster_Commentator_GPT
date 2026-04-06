@@ -247,69 +247,75 @@ async def main(page: ft.Page):
     await actions_with_the_program_window(page)
     page.theme_mode = ft.ThemeMode.LIGHT
 
-    info_list = ft.ListView(expand=True, spacing=10, padding=PADDING, auto_scroll=True)
-    add_startup_message(info_list)
+    def show_main_menu():
+        """Показывает главное меню"""
+        page.clean()
+        info_list = ft.ListView(
+            expand=True, spacing=10, padding=PADDING, auto_scroll=True
+        )
+        add_startup_message(info_list)
+        menu = build_menu(page)
 
-    menu = build_menu(page)
-
-    layout = ft.Row(
-        [
-            ft.Container(menu, width=PROGRAM_MENU_WIDTH, padding=PADDING),
-            ft.VerticalDivider(width=1),
-            ft.Container(info_list, expand=True, padding=PADDING),
-        ],
-        spacing=0,
-        expand=True,
-    )
-
-    page.add(layout)
-
-    async def handle_route_change(e):
-        if page.route == "/" or not page.route:
-            # Возврат на главную страницу
-            if len(page.views) > 0:
-                page.views.clear()
-            page.views.append(ft.View("/", [layout]))
-            page.update()
-            return
-
-        route_handlers = {
-            "/getting_list_channels": lambda: handle_getting_list_channels(page),
-            "/submitting_comments": lambda: TelegramCommentator(
-                page
-            ).handle_submitting_comments(),
-            "/change_name_description_photo": lambda: (
-                handle_change_name_description_photo(page)
-            ),
-            "/channel_subscription": lambda: handle_channel_subscription(page),
-            "/creating_list_of_channels": lambda: handle_creating_list_of_channels(
-                page
-            ),
-            "/documentation": lambda: handle_documentation(page),
-            "/connect_accounts": lambda: handle_connect_accounts(page),
-            "/settings": lambda: handle_settings(page),
-            "/settings_proxy": lambda: SettingPage(
-                page
-            ).creating_the_main_window_for_proxy_data_entry(),
-            "/record_id_hash": lambda: SettingPage(page).writing_api_id_api_hash(),
-            "/recording_message": lambda: SettingPage(
-                page
-            ).recording_text_for_sending_messages(
-                "Введите сообщение, которое будет отправляться в канал",
-                "data/message/message",
-            ),
-            "/choosing_an_ai_model": lambda: SettingPage(page).choosing_an_ai_model(),
-            "/record_time": lambda: SettingPage(page).record_setting(
-                limit_type="time_config", label="Введите время в секундах, в цифрах"
-            ),
-        }
-
-        handler = route_handlers.get(page.route)
-        if handler:
-            await handler()
+        layout = ft.Row(
+            [
+                ft.Container(menu, width=PROGRAM_MENU_WIDTH, padding=PADDING),
+                ft.VerticalDivider(width=1),
+                ft.Container(info_list, expand=True, padding=PADDING),
+            ],
+            spacing=0,
+            expand=True,
+        )
+        page.add(layout)
         page.update()
 
-    page.on_route_change = handle_route_change
+    async def route_change(e):
+        logger.info(f"Route change to: {page.route}")
+
+        if page.route == "/" or not page.route:
+            show_main_menu()
+        else:
+            page.views.clear()
+            route_handlers = {
+                "/getting_list_channels": lambda: handle_getting_list_channels(page),
+                "/submitting_comments": lambda: TelegramCommentator(
+                    page
+                ).handle_submitting_comments(),
+                "/change_name_description_photo": lambda: (
+                    handle_change_name_description_photo(page)
+                ),
+                "/channel_subscription": lambda: handle_channel_subscription(page),
+                "/creating_list_of_channels": lambda: handle_creating_list_of_channels(
+                    page
+                ),
+                "/documentation": lambda: handle_documentation(page),
+                "/connect_accounts": lambda: handle_connect_accounts(page),
+                "/settings": lambda: handle_settings(page),
+                "/settings_proxy": lambda: SettingPage(
+                    page
+                ).creating_the_main_window_for_proxy_data_entry(),
+                "/record_id_hash": lambda: SettingPage(page).writing_api_id_api_hash(),
+                "/recording_message": lambda: SettingPage(
+                    page
+                ).recording_text_for_sending_messages(
+                    "Введите сообщение, которое будет отправляться в канал",
+                    "data/message/message",
+                ),
+                "/choosing_an_ai_model": lambda: SettingPage(
+                    page
+                ).choosing_an_ai_model(),
+                "/record_time": lambda: SettingPage(page).record_setting(
+                    limit_type="time_config", label="Введите время в секундах, в цифрах"
+                ),
+            }
+
+            handler = route_handlers.get(page.route)
+            if handler:
+                await handler()
+            page.update()
+
+    page.on_route_change = route_change
+    logger.info("Starting app")
+    show_main_menu()
     await loging()
 
 

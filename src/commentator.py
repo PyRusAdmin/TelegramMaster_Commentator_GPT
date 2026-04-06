@@ -48,11 +48,10 @@ class TelegramCommentator:
         """Создает страницу Отправка комментариев"""
         try:
             logger.info("Пользователь перешел на страницу Отправка комментариев")
-            self.page.views.clear()  # Очищаем страницу и добавляем новый View
+            self.page.views.clear()
 
             lv = ft.ListView(expand=10, spacing=1, padding=2, auto_scroll=True)
 
-            # Добавляем пояснительный текст
             lv.controls.append(
                 ft.Text(
                     "🔗 Перед началом работы убедитесь, что все необходимые настройки выполнены.\n\n"
@@ -60,10 +59,6 @@ class TelegramCommentator:
                     "💾 Обработанные сообщения автоматически сохраняются в базе данных: `data/database/app.db`\n",
                 )
             )
-
-            self.page.controls.append(
-                lv
-            )  # добавляем ListView на страницу для отображения информации
 
             async def action_1(_):
                 lv.controls.append(

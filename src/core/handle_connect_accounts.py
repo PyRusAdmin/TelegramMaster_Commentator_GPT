@@ -13,7 +13,6 @@ async def handle_connect_accounts(page: ft.Page):
         logger.info("Пользователь перешел на страницу Подключение аккаунтов")
         page.views.clear()
         lv = ft.ListView(expand=10, spacing=1, padding=2, auto_scroll=True)
-        page.controls.append(lv)
 
         async def _add_connect_accounts_message():
             """Добавляет стартовое сообщение в ListView."""

@@ -12,11 +12,8 @@ from src.telegram_client import connect_telegram_account
 async def handle_change_name_description_photo(page: ft.Page):
     """Создает страницу 🖼️ Смена имени, описания"""
 
-    page.views.clear()  # Очищаем страницу и добавляем новый View
+    page.views.clear()
     lv = ft.ListView(expand=10, spacing=1, padding=2, auto_scroll=True)
-    page.controls.append(
-        lv
-    )  # добавляем ListView на страницу для отображения информации
 
     lv.controls.append(
         ft.Text(

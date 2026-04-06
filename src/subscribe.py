@@ -21,20 +21,15 @@ from src.telegram_client import connect_telegram_account
 async def handle_channel_subscription(page: ft.Page):
     """Создает страницу Подписка на каналы"""
     logger.info("Пользователь перешел на страницу Подписка на каналы")
-    page.views.clear()  # Очищаем страницу и добавляем новый View
+    page.views.clear()
     lv = ft.ListView(expand=10, spacing=1, padding=2, auto_scroll=True)
 
-    # Добавляем пояснительный текст
     lv.controls.append(
         ft.Text(
             "🔗 Перед началом работы сформируйте список каналов для подписки\n\n"
             "🔄 В процессе работы программа будет подписываться на каналы и отображать важную информацию для пользователя.\n\n"
         )
     )
-
-    page.controls.append(
-        lv
-    )  # добавляем ListView на страницу для отображения информации
 
     async def action_1(_):
         lv.controls.append(

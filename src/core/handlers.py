@@ -13,7 +13,6 @@ async def handle_settings(page: ft.Page):
     logger.info("Пользователь перешел на страницу Настройки")
     page.views.clear()
     lv = ft.ListView(expand=10, spacing=1, padding=2, auto_scroll=True)
-    page.controls.append(lv)
 
     lv.controls.append(
         ft.Text(
@@ -23,7 +22,6 @@ async def handle_settings(page: ft.Page):
             "✉️ Запись сообщения — настройка текста, который будет отправляться в комментариях. Можно задать любой текст для автоматической рассылки.\n\n"
         )
     )
-    page.update()
 
     async def connection_proxy(_):
         """🔗 Подключение прокси"""
@@ -74,10 +72,9 @@ async def handle_settings(page: ft.Page):
 async def handle_creating_list_of_channels(page: ft.Page):
     """Создает страницу 📂 Формирование списка каналов"""
     logger.info("Пользователь перешел на страницу Формирование списка каналов")
-    page.views.clear()  # Очищаем страницу и добавляем новый View
+    page.views.clear()
     lv = ft.ListView(expand=10, spacing=1, padding=2, auto_scroll=True)
 
-    # Добавляем пояснительный текст
     lv.controls.append(
         ft.Text(
             "Перед тем как приступить к подписке, необходимо создать список каналов, на которые будет подписываться ваш аккаунт.\n\n"
@@ -86,10 +83,6 @@ async def handle_creating_list_of_channels(page: ft.Page):
             "2. Нажмите кнопку 'Готово' для сохранения списка.\n"
         )
     )
-
-    page.controls.append(
-        lv
-    )  # добавляем ListView на страницу для отображения информации
 
     list_of_channels = ft.TextField(
         label="Введите список каналов", multiline=True, max_lines=19

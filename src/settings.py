@@ -38,12 +38,9 @@ class SettingPage:
         """
         Создание главного окна для ввода дынных proxy
         """
-        self.page.controls.append(
-            self.lv
-        )  # добавляем ListView на страницу для отображения логов 📝
         self.lv.controls.append(
             ft.Text(f"Введите данные для записи")
-        )  # отображаем сообщение в ListView
+        )
         proxy_type = ft.TextField(
             label="Введите тип прокси, например SOCKS5: ", multiline=True, max_lines=19
         )
@@ -93,12 +90,9 @@ class SettingPage:
         :param label: Текст для отображения в поле ввода.
         :param unique_filename: Имя файла для записи данных.
         """
-        self.page.controls.append(
-            self.lv
-        )  # добавляем ListView на страницу для отображения логов 📝
         self.lv.controls.append(
             ft.Text(f"Введите данные для записи")
-        )  # отображаем сообщение в ListView
+        )
         text_to_send = ft.TextField(label=label, multiline=True, max_lines=19)
 
         async def btn_click(e) -> None:
@@ -120,12 +114,9 @@ class SettingPage:
         :param limit_type: Тип лимита.
         :param label: Текст для отображения в поле ввода.
         """
-        self.page.controls.append(
-            self.lv
-        )  # добавляем ListView на страницу для отображения логов 📝
         self.lv.controls.append(
             ft.Text(f"Введите данные для записи")
-        )  # отображаем сообщение в ListView
+        )
         limits = ft.TextField(label=label, multiline=True, max_lines=19)
 
         async def btn_click(e) -> None:
@@ -152,10 +143,7 @@ class SettingPage:
         :param time_range: Имя файла, в который будут записаны данные
         :return: None
         """
-        self.page.controls.append(
-            self.lv
-        )  # добавляем ListView на страницу для отображения логов 📝
-        for time_range_message in time_range:
+                for time_range_message in time_range:
             self.lv.controls.append(
                 ft.Text(f"Записанные данные в файле {time_range_message}")
             )  # отображаем сообщение в ListView
@@ -199,10 +187,7 @@ class SettingPage:
         """
         Записываем api, hash полученный с помощью регистрации приложения на сайте https://my.telegram.org/auth
         """
-        self.page.controls.append(
-            self.lv
-        )  # добавляем ListView на страницу для отображения логов 📝
-        self.lv.controls.append(
+                self.lv.controls.append(
             ft.Text(f"Введите данные для записи")
         )  # отображаем сообщение в ListView
         api_id_data = ft.TextField(label="Введите api_id", multiline=True, max_lines=19)

@@ -143,7 +143,6 @@ async def handle_documentation(page: ft.Page):
     page.fonts = {
         "Roboto Mono": "RobotoMono-VariableFont_wght.ttf",  # Шрифт
     }
-    page.scroll = "auto"
 
     # Функция для загрузки и отображения Markdown-файла
     def load_markdown(file_path: str):
@@ -158,12 +157,15 @@ async def handle_documentation(page: ft.Page):
 
     # Загружаем файл документации
     markdown_content = load_markdown("doc/doc.md")
+
     # Создаем Markdown-виджет для отображения документации
+    def handle_link(e):
+        page.launch_url(e.data)
+
     markdown_widget = ft.Markdown(
         markdown_content,
         selectable=True,
-        # code_style=ft.TextStyle(font_family="Roboto Mono"),
-        on_tap_link=lambda e: page.launch_url(e.data),  # Открываем ссылки в браузере
+        on_tap_link=handle_link,
     )
 
     async def open_website(_):

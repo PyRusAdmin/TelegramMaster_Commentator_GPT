@@ -40,14 +40,14 @@ async def view_with_elements_input_field(
     # Создаем View с элементами
     page.views.append(
         ft.View(
-            f"/{route_page}",
+            route=f"/{route_page}",
             controls=[
                 ft.Column(
                     controls=[title, lv, text_field, *buttons],
-                    expand=True,  # Растягиваем Column на всю доступную область
+                    expand=True,
                 )
             ],
-            padding=20,  # Добавляем отступы вокруг содержимого
+            padding=20,
         )
     )
 

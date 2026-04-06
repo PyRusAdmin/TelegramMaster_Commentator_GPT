@@ -74,7 +74,7 @@ class SettingPage:
                 ]
             )
             await show_notification(self.page, "Данные успешно записаны!")
-            self.page.go(
+            self.page.push_route(
                 "/settings"
             )  # Изменение маршрута в представлении существующих настроек
             self.page.update()
@@ -106,7 +106,7 @@ class SettingPage:
                 reactions=text_to_send.value, path_to_the_file=unique_filename
             )  # Сохраняем данные в файл
             await show_notification(self.page, "Данные успешно записаны!")
-            self.page.go(
+            self.page.push_route(
                 "/settings"
             )  # Изменение маршрута в представлении существующих настроек
             self.page.update()
@@ -139,7 +139,7 @@ class SettingPage:
                     self.page, "⚠️ Поврежден файл data/config/config.ini"
                 )
                 logger.error(f"Ошибка: {error}")
-            self.page.go(
+            self.page.push_route(
                 "/settings"
             )  # Изменение маршрута в представлении существующих настроек
             self.page.update()
@@ -179,7 +179,7 @@ class SettingPage:
                         ft.Text("Данные успешно записаны!")
                     )  # отображаем сообщение в ListView
                     await show_notification(self.page, "Данные успешно записаны!")
-                    self.page.go(
+                    self.page.push_route(
                         "/settings"
                     )  # Изменение маршрута в представлении существующих настроек
                 else:
@@ -216,7 +216,7 @@ class SettingPage:
             config.get("telegram_settings", "hash")
             config.set("telegram_settings", "hash", api_hash_data.value)
             writing_settings_to_a_file(config)
-            self.page.go(
+            self.page.push_route(
                 "/settings"
             )  # Изменение маршрута в представлении существующих настроек
             self.page.update()
@@ -239,7 +239,7 @@ class SettingPage:
 
         def back_button_clicked(e) -> None:
             """Кнопка возврата в меню настроек"""
-            self.page.go("/settings")
+            self.page.push_route("/settings")
 
         # Создание View с элементами
         self.page.views.append(
@@ -277,7 +277,7 @@ class SettingPage:
 
         def back_button_clicked(e) -> None:
             """Кнопка возврата в меню настроек"""
-            self.page.go("/settings")
+            self.page.push_route("/settings")
 
         def done_button_clicked(e) -> None:
             """Кнопка подтверждения выбора"""

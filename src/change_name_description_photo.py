@@ -57,7 +57,7 @@ async def handle_change_name_description_photo(page: ft.Page):
         title=await program_title(title="🖼️ Смена имени, описания"),
         buttons=[
             await create_buttons(text="🖼️ Смена имени, описания", on_click=action_1),
-            await create_buttons(text="Назад", on_click=lambda _: page.go("/")),
+            await create_buttons(text="Назад", on_click=lambda _: page.push_route("/")),
         ],
         route_page="change_name_description_photo",
         lv=lv,

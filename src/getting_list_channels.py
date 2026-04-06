@@ -69,7 +69,7 @@ async def handle_getting_list_channels(page: ft.Page):
         title=await program_title(title="Получение списка каналов"),
         buttons=[
             await create_buttons(text="📋 Получить список каналов", on_click=action_1),
-            await create_buttons(text="⬅ Назад", on_click=lambda _: page.go("/")),
+            await create_buttons(text="⬅ Назад", on_click=lambda _: page.push_route("/")),
         ],
         route_page="getting_list_channels",
         lv=lv,

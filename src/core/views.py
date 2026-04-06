@@ -5,7 +5,9 @@ TITLE_FONT_WEIGHT = ft.FontWeight.BOLD
 PRIMARY_COLOR = ft.Colors.CYAN_600
 
 
-async def message_output_program_window(lv: ft.ListView, page: ft.Page, message_program):
+async def message_output_program_window(
+    lv: ft.ListView, page: ft.Page, message_program
+):
     """
     Вывод сообщений в окно программы.
     :param lv: ListView
@@ -18,8 +20,14 @@ async def message_output_program_window(lv: ft.ListView, page: ft.Page, message_
     page.update()  # Обновляем страницу
 
 
-async def view_with_elements_input_field(page: ft.Page, title: ft.Text, buttons: list[ft.ElevatedButton], route_page,
-                                         lv: ft.ListView, text_field: ft.TextField, ):
+async def view_with_elements_input_field(
+    page: ft.Page,
+    title: ft.Text,
+    buttons: list[ft.ElevatedButton],
+    route_page,
+    lv: ft.ListView,
+    text_field: ft.TextField,
+):
     """
     Создаем View с элементами и добавляем в него элементы
     :param title: Текст заголовка
@@ -72,9 +80,9 @@ async def key_app_bar(page: ft.Page):
     """
     return ft.AppBar(
         leading=ft.IconButton(
-            icon=ft.Icons.ARROW_BACK,  # ✅ правильно — ft.Icons
+            icon=ft.Icons.ARROW_BACK,
             tooltip="На главную",
-            on_click=lambda _: page.go("/"),  # переход на главную страницу
+            on_click=lambda _: page.push_route("/"),
         ),
         title=ft.Text("На главную"),
         toolbar_height=40,
@@ -83,12 +91,12 @@ async def key_app_bar(page: ft.Page):
 
 
 async def view_with_elements(
-        page: ft.Page,
-        title: ft.Text,
-        buttons: list[ft.ElevatedButton],
-        route_page,
-        lv: ft.ListView,
-        content: list[ft.Control] = None,
+    page: ft.Page,
+    title: ft.Text,
+    buttons: list[ft.ElevatedButton],
+    route_page,
+    lv: ft.ListView,
+    content: list[ft.Control] = None,
 ):
     # Создаем View с элементами
     if content:
@@ -96,8 +104,8 @@ async def view_with_elements(
 
     page.views.append(
         ft.View(
-            f"/{route_page}",
-            appbar=await key_app_bar(page),  # теперь передаем page в AppBar
+            route=f"/{route_page}",
+            appbar=await key_app_bar(page),
             controls=[
                 ft.Column(
                     controls=[title, lv, *buttons],

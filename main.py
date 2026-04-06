@@ -60,7 +60,7 @@ def create_title(text: str, font_size) -> ft.Text:
 def create_button(page: ft.Page, text: str, route: str) -> ft.OutlinedButton:
     return ft.OutlinedButton(
         content=ft.Text(text),
-        on_click=lambda _: page.go(route),
+        on_click=lambda _: page.push_route(route),
         width=BUTTON_WIDTH,
         height=BUTTON_HEIGHT,
         style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=RADIUS)),

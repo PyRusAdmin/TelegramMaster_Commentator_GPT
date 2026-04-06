@@ -15,13 +15,12 @@ from src.core.notification import show_notification
 from src.db_handler import DatabaseHandler
 
 config = configparser.ConfigParser(empty_lines_in_values=False, allow_no_value=True)
-config.read("data/config/config.ini")
+config.read("data/config/config.ini", encoding="utf-8")
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
 
 class SettingPage:
-
     def __init__(self, page: ft.Page):
         """
         Инициализация страницы настроек
@@ -32,7 +31,7 @@ class SettingPage:
         self.page = page
         self.db_handler = DatabaseHandler()
         self.width_elements = (
-                int(WINDOW_WIDTH) - 10
+            int(WINDOW_WIDTH) - 10
         )  # Ширина элементов (поля ввода, выпадающего списка и кнопок)
 
     async def creating_the_main_window_for_proxy_data_entry(self) -> None:
@@ -169,7 +168,7 @@ class SettingPage:
                 smaller_times = int(smaller_timex.value)
                 larger_times = int(larger_timex.value)
                 if (
-                        smaller_times < larger_times
+                    smaller_times < larger_times
                 ):  # Проверяем, что первое время меньше второго
                     # Если условие прошло проверку, то возвращаем первое и второе время
                     config = recording_limits_file(
@@ -227,7 +226,7 @@ class SettingPage:
         )
 
     async def add_view_with_fields_and_button(
-            self, fields: list, btn_click, lv
+        self, fields: list, btn_click, lv
     ) -> None:
         """
         Добавляет представление с заданными текстовыми полями и кнопкой.
@@ -250,12 +249,12 @@ class SettingPage:
                     lv,  # отображение логов 📝
                     ft.Column(
                         controls=fields
-                                 + [
-                                     await create_buttons(text="✅ Готово", on_click=btn_click),
-                                     await create_buttons(
-                                         text="⬅️ Назад", on_click=back_button_clicked
-                                     ),
-                                 ]
+                        + [
+                            await create_buttons(text="✅ Готово", on_click=btn_click),
+                            await create_buttons(
+                                text="⬅️ Назад", on_click=back_button_clicked
+                            ),
+                        ]
                     ),
                 ],
             )
@@ -301,9 +300,9 @@ class SettingPage:
 
             # Если ничего не введено/не выбрано
             if (
-                    not data.get("token")
-                    and not data.get("model")
-                    and not data.get("promt")
+                not data.get("token")
+                and not data.get("model")
+                and not data.get("promt")
             ):
                 result_text.value = "⚠️ Вы ничего не ввели!"
                 self.page.update()

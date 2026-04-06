@@ -112,15 +112,21 @@ class TelegramCommentator:
                     await client.get_entity(name[0]), limit=1
                 )
                 for message in messages:
-                    # Получаем ID сообщения и ID канала, чтобы записать данные в базу данных
                     message_id = message.id
                     message_peer_id = message.peer_id
-                    message_text = message.text or message.message or ""
+                    message_text = ""
+                    if message.text:
+                        message_text = message.text
+                    elif hasattr(message, "message") and message.message:
+                        if isinstance(message.message, str):
+                            message_text = message.message
+
                     await message_output_program_window(
                         lv=lv,
                         page=self.page,
                         message_program=f"ID сообщения: {message.id} ID: {message.peer_id} Дата: {message.date}",
                     )
+
                     if messages:
                         post = messages[0]
                         if post.id != last_message_ids.get(name[0], None):
@@ -135,16 +141,10 @@ class TelegramCommentator:
                                         else "Напиши короткий позитивный комментарий к посту"
                                     )
                                     data = await get_groq_response(user_prompt)
-                                    # Проверяем существование записи в БД
+
                                     if not await check_message_exists(
                                         message_id, channel_id
                                     ):
-                                        # Если записи нет, отправляем комментарий и записываем его в БД
-
-                                        # Заранее заготовленное сообщение
-                                        # data = await reading_json_file()
-                                        # Получаем текст сообщения от ИИ
-
                                         await client.send_message(
                                             entity=name[0],
                                             message=f"{data}",
@@ -174,74 +174,83 @@ class TelegramCommentator:
                                         )
                                         await asyncio.sleep(int(time_config))
 
-                                if isinstance(message_peer_id, PeerChannel):
-                                    channel_id = message_peer_id.channel_id
-                                    logger.info(f"{message_id}, {channel_id}")
-
-                                    await record_bottom_messages_database(
-                                        message_id, channel_id
+                                else:
+                                    await message_output_program_window(
+                                        lv=lv,
+                                        page=self.page,
+                                        message_program=f"Сообщение не из канала, пропускаем",
                                     )
+                            except Exception as e:
+                                logger.exception(e)
 
-                            except ChatWriteForbiddenError:
-                                await message_output_program_window(
-                                    lv=lv,
-                                    page=self.page,
-                                    message_program=f"Вы не можете отправлять сообщения в: {name[0]}",
-                                )
-                            except MsgIdInvalidError:
-                                await message_output_program_window(
-                                    lv=lv,
-                                    page=self.page,
-                                    message_program=f"Возможно пост был изменен или удален",
-                                )
-                            except UserBannedInChannelError:
-                                await message_output_program_window(
-                                    lv=lv,
-                                    page=self.page,
-                                    message_program=f"Вам запрещено отправлять сообщения в супергруппы/каналы",
-                                )
-                            except SlowModeWaitError as e:
-                                await message_output_program_window(
-                                    lv=lv,
-                                    page=self.page,
-                                    message_program=f"Вы не можете отправлять сообщения в супергруппы/каналы. Попробуйте позже через {str(datetime.timedelta(seconds=e.seconds))}",
-                                )
-                                await message_output_program_window(
-                                    lv=lv,
-                                    page=self.page,
-                                    message_program=f"Спим {str(datetime.timedelta(seconds=e.seconds))}",
-                                )
-                                await asyncio.sleep(e.seconds)
-                            except FloodWaitError as e:
-                                await message_output_program_window(
-                                    lv=lv,
-                                    page=self.page,
-                                    message_program=f"Flood! wait for {str(datetime.timedelta(seconds=e.seconds))}",
-                                )
-                                await message_output_program_window(
-                                    lv=lv,
-                                    page=self.page,
-                                    message_program=f"Спим {str(datetime.timedelta(seconds=e.seconds))}",
-                                )
-                                await asyncio.sleep(int(time_config))
-                            except ChatGuestSendForbiddenError:
-                                await message_output_program_window(
-                                    lv=lv,
-                                    page=self.page,
-                                    message_program=f"Вы не можете отправлять сообщения в супергруппы/каналы",
-                                )
-                            except ChannelPrivateError:
-                                await message_output_program_window(
-                                    lv=lv,
-                                    page=self.page,
-                                    message_program=f"Канал {name[0]} закрыт",
-                                )
-                            except PeerIdInvalidError:
-                                await message_output_program_window(
-                                    lv=lv,
-                                    page=self.page,
-                                    message_program=f"Неверный ID канала: {name[0]}",
-                                )
+                    if isinstance(message_peer_id, PeerChannel):
+                        channel_id = message_peer_id.channel_id
+                        logger.info(f"{message_id}, {channel_id}")
+
+                        try:
+                            await record_bottom_messages_database(
+                                message_id, channel_id
+                            )
+                        except ChatWriteForbiddenError:
+                            await message_output_program_window(
+                                lv=lv,
+                                page=self.page,
+                                message_program=f"Вы не можете отправлять сообщения в: {name[0]}",
+                            )
+                        except MsgIdInvalidError:
+                            await message_output_program_window(
+                                lv=lv,
+                                page=self.page,
+                                message_program=f"Возможно пост был изменен или удален",
+                            )
+                        except UserBannedInChannelError:
+                            await message_output_program_window(
+                                lv=lv,
+                                page=self.page,
+                                message_program=f"Вам запрещено отправлять сообщения в супергруппы/каналы",
+                            )
+                        except SlowModeWaitError as e:
+                            await message_output_program_window(
+                                lv=lv,
+                                page=self.page,
+                                message_program=f"Вы не можете отправлять сообщения в супергруппы/каналы. Попробуйте позже через {str(datetime.timedelta(seconds=e.seconds))}",
+                            )
+                            await message_output_program_window(
+                                lv=lv,
+                                page=self.page,
+                                message_program=f"Спим {str(datetime.timedelta(seconds=e.seconds))}",
+                            )
+                            await asyncio.sleep(e.seconds)
+                        except FloodWaitError as e:
+                            await message_output_program_window(
+                                lv=lv,
+                                page=self.page,
+                                message_program=f"Flood! wait for {str(datetime.timedelta(seconds=e.seconds))}",
+                            )
+                            await message_output_program_window(
+                                lv=lv,
+                                page=self.page,
+                                message_program=f"Спим {str(datetime.timedelta(seconds=e.seconds))}",
+                            )
+                            await asyncio.sleep(int(time_config))
+                        except ChatGuestSendForbiddenError:
+                            await message_output_program_window(
+                                lv=lv,
+                                page=self.page,
+                                message_program=f"Вы не можете отправлять сообщения в супергруппы/каналы",
+                            )
+                        except ChannelPrivateError:
+                            await message_output_program_window(
+                                lv=lv,
+                                page=self.page,
+                                message_program=f"Канал {name[0]} закрыт",
+                            )
+                        except PeerIdInvalidError:
+                            await message_output_program_window(
+                                lv=lv,
+                                page=self.page,
+                                message_program=f"Неверный ID канала: {name[0]}",
+                            )
             except FloodWaitError as e:  # Если ошибка при подписке
                 await message_output_program_window(
                     lv=lv,
